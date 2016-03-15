@@ -6,12 +6,14 @@ xsub(X,Y,Z) :- Z is X - Y.
 
 xisempty([]).
 
-xlast([],_).
-xlast([X],X).
+xlast([X], X).
 xlast([_|X],Y) :- xlast(X,Y).
 
-xfirst([A|_],Y) :- Y = A.
+xlast_n_minus_one([_],[]).
+xlast_n_minus_one([F|L1],[F|L2]) :- xlast_n_minus_one(L1, L2).
+
+xfirst([A|_],Y) :- Y == A.
 
 xreverse([],[]).
 xreverse([X],[X]).
-xreverse([_|L],[A|X]) :- xreverse(L,X),xlast(L,A).
+xreverse(L1,[F2|L2]) :- xlast_n_minus_one(L1, X),xreverse(X,L2),xlast(L1,F2).
