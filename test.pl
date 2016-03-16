@@ -14,6 +14,11 @@ xexcept_last([F|L1],[F|L2]) :- xexcept_last(L1, L2).
 
 xfirst([A|_],Y) :- Y == A.
 
+xlists_equal([],[]).
+xlists_equal([F1|L1],[F2|L2]) :- F1 == F2,xlists_equal(L1,L2).
+
+xrest([_|L1],L2) :- xlists_equal(L1,L2).
+
 xreverse([],[]).
 xreverse([X],[X]).
 xreverse(L1,[F2|L2]) :- xexcept_last(L1, X),xreverse(X,L2),xlast(L1,F2).
@@ -32,7 +37,5 @@ xcount_instances([],_,0).
 xcount_instances([F|L],X,Y) :- F == X,xcount_instances(L,X,Z),Y is Z + 1.
 xcount_instances([F|L],X,Y) :- F \== X,xcount_instances(L,X,Y).
 
-xunique([],_).
-%xunique(L1,[F|L2]) :- xunique(L1,L2),xcount(L2,X),X == 0,xcount(L1,Y),Y == 1.
-%xunique(L1,[F|L2]) :- xunique(L1,L2),xnot_contains(L1,F),xcontains(L2,F).
-%xunique([F|L1],L2) :- xunique(L1,L2),xnot_contains(L1,F),xcontains(L2,F).
+xappend_value([],X,[F|L]) :- X = F,xcount(L,Y),Y == 0.
+xappend_value([F|L1], X, [F|L2]) :- xappend_value(L1,X,L2).
