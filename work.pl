@@ -37,10 +37,15 @@ xunique_helper(_,[],[]).
 %xunique_helper(L1,[F2|L2],X):-xunique_helper(L1,L2,Y),xcount_instances(L1,F2,C),C==1,xnot_contains(Y,F2),xappend_value_to_front(Y,F2,Z),X=Z.
 %xunique_helper(L1,[F2|L2],X):-xunique_helper(L1,L2,Y),xcount_instances(L1,F2,C),C\==1,X=Y.
 
-xunique_helper(L1,[F2|L2],X):-xunique_helper(L1,L2,Y),xnot_contains(Y,F2),xappend_value_to_front(Y,F2,Z),X=Z.
-xunique_helper(L1,[F2|L2],X):-xunique_helper(L1,L2,Y),xcontains(Y,F2),X=Y.
+%xunique_helper(L1,[F2|L2],X):-xunique_helper(L1,L2,Y),xnot_contains(Y,F2),xappend_value_to_front(Y,F2,Z),X=Z.
+%xunique_helper(L1,[F2|L2],X):-xunique_helper(L1,L2,Y),xcontains(Y,F2),X=Y.
 
-xunique(L,X) :- xunique_helper(L,L,X).
+xunique([],[]).
+xunique([F|L1],L2) :- xunique(L1,X),xremove_all(X,Y,F),xappend_value_to_front(Y,F,Z),L2=Z.
+
+xremove_all([],[],_).
+xremove_all([F|L1],L2,X) :- xremove_all(L1,Y,X),F \== X,xappend_value_to_front(Y,F,Z),L2=Z.
+xremove_all([F|L1],L2,X) :- xremove_all(L1,Y,X),F == X,L2=Y.
 
 %-----------------------------------------------------------------------------------------------------------------------
 
