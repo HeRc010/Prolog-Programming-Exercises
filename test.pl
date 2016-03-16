@@ -47,3 +47,6 @@ xunique_helper(L1,[F2|L2],X):-xunique_helper(L1,L2,Y),xcount_instances(L1,F2,C),
 xunique_helper(L1,[F2|L2],X):-xunique_helper(L1,L2,Y),xcount_instances(L1,F2,C),C\==1,X=Y.
 
 xunique(L,X) :- xunique_helper(L,L,X).
+
+removeLast([X],[],X).
+removeLast([F|L1],[F|L2],L3) :- removeLast(L1,L2,L3).
