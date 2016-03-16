@@ -6,12 +6,6 @@ xsub(X,Y,Z) :- Z is X - Y.
 
 xisempty([]).
 
-xlast([X], X).
-xlast([_|X],Y) :- xlast(X,Y).
-
-xexcept_last([_],[]).
-xexcept_last([F|L1],[F|L2]) :- xexcept_last(L1, L2).
-
 xfirst([A|_],X) :- X = A.
 
 xlists_equal([],[]).
@@ -19,8 +13,13 @@ xlists_equal([F1|L1],[F2|L2]) :- F1 = F2,xlists_equal(L1,L2).
 
 xrest([_|L1],L2) :- xlists_equal(L1,L2).
 
+xlast([X], X).
+xlast([_|X],Y) :- xlast(X,Y).
+
+xexcept_last([_],[]).
+xexcept_last([F|L1],[F|L2]) :- xexcept_last(L1, L2).
+
 xreverse([],[]).
-xreverse([X],[X]).
 xreverse(L1,[F2|L2]) :- xexcept_last(L1, X),xreverse(X,L2),xlast(L1,F2).
 
 xcontains([],X) :- X \== X.
