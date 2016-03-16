@@ -18,13 +18,13 @@ test(xadd,all(X == [3])) :- xadd(1,2,X).
 %:- end_tests(xreverse).
 
 % xunique
-:- begin_tests(xunique).
-test(xunique,true(L == [a,c,d])) :- xunique([a,c,a,d],L).
-test(xunique) :- xunique([a,c,a,d], [a,c,d]).
-test(xunique,fail) :- xunique([a,c,a,d], [c,a,d]).
-test(xunique,true(L == [a,b,c])) :- xunique([a,a,a,a,a,b,b,b,b,b,c,c,c,c,b,a], L).
-test(xunique,true(L == [])) :- xunique([], L).
-:- end_tests(xunique).
+%:- begin_tests(xunique).
+%test(xunique,true(L == [a,c,d])) :- xunique([a,c,a,d],L).
+%test(xunique) :- xunique([a,c,a,d], [a,c,d]).
+%test(xunique,fail) :- xunique([a,c,a,d], [c,a,d]).
+%test(xunique,true(L == [a,b,c])) :- xunique([a,a,a,a,a,b,b,b,b,b,c,c,c,c,b,a], L).
+%test(xunique,true(L == [])) :- xunique([], L).
+%:- end_tests(xunique).
 
 % xunion
 %:- begin_tests(xunion).
@@ -48,5 +48,19 @@ test(xunique,true(L == [])) :- xunique([], L).
 %test(removeLast,true(L1 == [])) :- removeLast([[a,b,c]], L1, Last).
 %test(removeLast,true(Last == [a,b,c])) :- removeLast([[a,b,c]], L1, Last).
 %:- end_tests(removeLast).
+
+:- begin_tests(allConnected).
+
+% ...
+
+%test(allConnected) :- .
+:- end_tests(allConnected).
+
+%:- begin_tests(maxclique).
+%test(maxclique,true(Cliques == [[a,d],[a,e]])) :- maxclique(2,Cliques).
+%test(maxclique,true(Cliques == [[a,b,c]])) :- maxclique(3,Cliques).
+%test(maxclique,true(Cliques == [])) :- maxclique(1,Cliques).
+%test(maxclique,true(Cliques == [])) ;- maxclique(0,Cliques).
+%:- end_tests(maxclique).
 
 :- run_tests.
