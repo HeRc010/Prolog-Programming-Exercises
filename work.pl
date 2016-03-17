@@ -42,8 +42,27 @@ removeLast([F|L1],[F|L2],L3) :- removeLast(L1,L2,L3).
 
 %-----------------------------------------------------------------------------------------------------------------------
 
-edge(X,Y) :- edge(Y,X).
+isConnected(_,[]).
+isConnected(X,[F|L]) :- edge(X,F),isConnected(X,L).
+isConnected(X,[F|L]) :- edge(F,X),isConnected(X,L).
 
 allConnected([]).
+allConnected([F|L]) :- isConnected(F,L),allConnected(L).
 
-maxclique(_,[]).
+subset([], _).
+subset([X|Xs], Set) :-
+  xappend(_, [X|Set1], Set),
+  subset(Xs, Set1).
+
+clique(L) :- findall(X,node(X),Nodes),
+             subset(L,Nodes), allConnected(L).
+
+for_each_clique(L1,[F2|L2],N,X).
+
+maxclique(N,Cliques) :- .
+
+
+
+
+
+%maxclique(_,[]).

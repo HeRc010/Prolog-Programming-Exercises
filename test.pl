@@ -1,4 +1,5 @@
 :- consult(work).
+:- consult(graph1).
 
 % tests test
 xadd(X,Y,Z) :- Z is X + Y.
@@ -51,9 +52,23 @@ test(xadd,all(X == [3])) :- xadd(1,2,X).
 
 :- begin_tests(allConnected).
 
-% ...
+% todo; perform test with graph definition here?
+%node(a).
+%node(b).
+%node(c).
+%node(d).
+%node(e).
 
-%test(allConnected) :- .
+%edge(a,b).
+%edge(b,c).
+%edge(c,a).
+%edge(d,a).
+%edge(a,e).
+
+test(allConnected) :- allConnected([a,b]).
+test(allConnected,fail) :- allConnected([e,c]).
+test(allConnected) :- allConnected([a,b,c]).
+test(allConnected,fail) :- allConnected([a,b,e]).
 :- end_tests(allConnected).
 
 %:- begin_tests(maxclique).
