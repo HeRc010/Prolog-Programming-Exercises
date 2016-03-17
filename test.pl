@@ -71,6 +71,16 @@ test(allConnected) :- allConnected([a,b,c]).
 test(allConnected,fail) :- allConnected([a,b,e]).
 :- end_tests(allConnected).
 
+:- begin_tests(xcontains_clique).
+test(xcontains_clique) :- xcontains_clique([a,b],[a,b,c]).
+test(xcontains_clique,fail) :- xcontains_clique([a,e],[a,b,c]).
+:- end_tests(xcontains_clique).
+
+:- begin_tests(xnot_contains_clique).
+test(xnot_contains_clique,fail) :- xnot_contains_clique([a,b],[a,b,c]).
+test(xnot_contains_clique) :- xnot_contains_clique([a,e],[a,b,c]).
+:- end_tests(xnot_contains_clique).
+
 %:- begin_tests(maxclique).
 %test(maxclique,true(Cliques == [[a,d],[a,e]])) :- maxclique(2,Cliques).
 %test(maxclique,true(Cliques == [[a,b,c]])) :- maxclique(3,Cliques).

@@ -57,9 +57,44 @@ subset([X|Xs], Set) :-
 clique(L) :- findall(X,node(X),Nodes),
              subset(L,Nodes), allConnected(L).
 
-for_each_clique(L1,[F2|L2],N,X).
+xcount([],0).
+xcount([_|L],X) :- xcount(L,Y),X is 1 + Y.
 
-maxclique(N,Cliques) :- .
+xcount_instances([],_,0).
+xcount_instances([F|L],X,Y) :- F == X,xcount_instances(L,X,Z),Y is Z + 1.
+xcount_instances([F|L],X,Y) :- F \== X,xcount_instances(L,X,Y).
+
+xcontains_clique([], _).
+xcontains_clique([F1|Clique1], Clique2) :- xcount_instances(Clique2,F1,X),X == 1,xcontains_clique(Clique1,Clique2).
+
+xnot_contains([],_).
+xnot_contains([F|L],X) :- F \== X,xnot_contains(L,X).
+
+xnot_contains_clique([],X) :- X \== X. % ensure the result is false
+xnot_contains_clique([F1|Clique1],Clique2) :- xnot_contains(Clique2,F1).
+xnot_contains_clique([F1|Clique1],Clique2) :- xnot_contains_clique(Clique1,Clique2).
+
+%xnot_contains_clique_h(L1,[],_,N) :- xcount(L1,X),X \== N.
+%xnot_contains_clique_h(L1,[F2|L2],L3,N) :- xcount_instances(L3,F2,X),
+%                                        X == 1,
+%                                        Y is N + 1,
+%                                        xnot_contains_clique_h(L1,L2,L3,Y).
+
+%xnot_contains_clique(Clique1,Clique2) :- xnot_contains_clique_h(Clique1,Clique1,Clique2,0).
+
+%xnot_contains_clique(L1,[F2|L2],L3,N).
+
+%xnot_contains_clique([],_).
+%xnot_contains_clique([F1|Clique1],Clique2) :- xcount_instances(Clique2,F1,X),X == 0,xnot_contains_clique(Clique1,Clique2).
+
+%xmaximal(_,[]).
+%xmaximal(Clique,[F|L]) :- xmaximal(Clique,L).
+
+for_each_clique(_,[],_,_).
+%for_each_clique(L1,[F2|L2],N,X) :- xcount(F2,Y),Y==N,.
+%for_each_clique(L1,[F2|L2],N,X) :- .
+
+maxclique(N,Cliques) :- findall(X,clique(X),L),for_each_clique(L,L,N,X),Cliques=X.
 
 
 
