@@ -89,6 +89,21 @@ test(xadd,all(X == [3])) :- xadd(1,2,X).
 %test(xnot_maximal,fail) :- findall(X,clique(X),L),xnot_maximal([a,b,c],L).
 %:- end_tests(xnot_maximal).
 
+%:- begin_tests(xfilter_cliques_by_size).
+%test(xfilter_cliques_by_size,true(L == [[a],[a,b],[a,b,c],[a,b,c,d]]))
+%    :- xfilter_cliques_by_size([[a],[a,b],[a,b,c],[a,b,c,d]],0,L).
+%test(xfilter_cliques_by_size,true(L == [[a],[a,b],[a,b,c],[a,b,c,d]]))
+%    :- xfilter_cliques_by_size([[a],[a,b],[a,b,c],[a,b,c,d]],1,L).
+%test(xfilter_cliques_by_size,true(L == [[a,b],[a,b,c],[a,b,c,d]]))
+%    :- xfilter_cliques_by_size([[a],[a,b],[a,b,c],[a,b,c,d]],2,L).
+%test(xfilter_cliques_by_size,true(L == [[a,b,c],[a,b,c,d]]))
+%    :- xfilter_cliques_by_size([[a],[a,b],[a,b,c],[a,b,c,d]],3,L).
+%test(xfilter_cliques_by_size,true(L == [[a,b,c,d]]))
+%    :- xfilter_cliques_by_size([[a],[a,b],[a,b,c],[a,b,c,d]],4,L).
+%test(xfilter_cliques_by_size,true(L == [[a,b],[a,c],[a,b,c,d]]))
+%    :- xfilter_cliques_by_size([[a],[a,b],[a,c],[a,b,c,d]],2,L).
+%:- end_tests(xfilter_cliques_by_size).
+
 :- begin_tests(maxclique).
 test(maxclique,true(Cliques == [[a,d],[a,e]])) :- maxclique(2,Cliques).
 test(maxclique,true(Cliques == [[a,b,c]])) :- maxclique(3,Cliques).

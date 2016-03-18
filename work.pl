@@ -67,7 +67,7 @@ xcount_instances([F|L],X,Y) :- F \== X,xcount_instances(L,X,Y).
 xnot_contains([],_).
 xnot_contains([F|L],X) :- F \== X,xnot_contains(L,X).
 
-xcontains_clique([], _).
+xcontains_clique([],_).
 xcontains_clique([F1|Clique1], Clique2) :- xcount_instances(Clique2,F1,X),X == 1,xcontains_clique(Clique1,Clique2).
 
 xnot_contains_clique([],X) :- X \== X. % ensure the result is false
@@ -87,19 +87,27 @@ xnot_maximal(Clique,Cliques) :- xremove_all(Cliques,Clique,L),xnot_maximal_h(Cli
 
 for_each_clique(_,[],_,[]).
 for_each_clique(L1,[F2|L2],N,X) :- for_each_clique(L1,L2,N,Y),
-                                xcount(F2,Z),
-                                Z == N,
                                 xmaximal(F2,L1),
-                                xappend_value_to_front(Y,F2,A),
-                                X=A.
-for_each_clique(L1,[F2|L2],N,X) :- for_each_clique(L1,L2,N,Y),
-                                xcount(F2,Z),
-                                Z \== N,
-                                X=Y.
-for_each_clique(L1,[F2|L2],N,X) :- for_each_clique(L1,L2,N,Y),
                                 xcount(F2,Z),
                                 Z == N,
-                                xnot_maximal(F2,L1),
-                                X=Y.
+                                xappend_value_to_front(Y,F2,A),
+                                X = A.
+for_each_clique(L1,[_|L2],N,X) :- for_each_clique(L1,L2,N,Y),
+                                X = Y.
 
-maxclique(N,Cliques) :- findall(X,clique(X),L),for_each_clique(L,L,N,X),Cliques=X.
+xfilter_cliques_by_size([],_,[]).
+xfilter_cliques_by_size([F|Cliques],N,L) :- xfilter_cliques_by_size(Cliques,N,X),
+                                            xcount(F,Y),
+                                            Y @>= N,
+                                            xappend_value_to_front(X,F,Z),
+                                            L = Z.
+xfilter_cliques_by_size([F|Cliques],N,L) :- xfilter_cliques_by_size(Cliques,N,X),
+                                            xcount(F,Y),
+                                            Y @< N,
+                                            L = X.
+
+maxclique(N,Cliques) :- findall(X,clique(X),L),
+                        xremove_all(L,[],Y),
+                        xfilter_cliques_by_size(Y,N,Z),
+                        for_each_clique(Z,Z,N,X),
+                        Cliques = X.
