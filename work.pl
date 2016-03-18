@@ -74,20 +74,16 @@ xnot_contains_clique([],X) :- X \== X. % ensure the result is false
 xnot_contains_clique([F1|_],Clique2) :- xnot_contains(Clique2,F1).
 xnot_contains_clique([_|Clique1],Clique2) :- xnot_contains_clique(Clique1,Clique2).
 
-
-xnot_maximal() :- xcontains_clique().
-xnot_maximal() :- xnot_contains_clique(),xnot_maximal().
-
-
-
-%xnot_maximal(_,[]).
-%xnot_maximal(Clique,[F|L]) :- xnot_maximal(Clique,L),xnot_contains_clique(Clique,F),F \== F.
-%xnot_maximal(Clique,[F|L]) :- xnot_maximal(Clique,L),xcontains_clique(Clique,F).
-
 xmaximal_h(_,[]).
 xmaximal_h(Clique,[F|L]) :- xnot_contains_clique(Clique,F),xmaximal_h(Clique,L).
 
 xmaximal(Clique,Cliques) :- xremove_all(Cliques,Clique,L),xmaximal_h(Clique,L).
+
+xnot_maximal_h(X,[]) :- X \== X. % ensure the result is false
+xnot_maximal_h(Clique,[F|_]) :- xcontains_clique(Clique,F).
+xnot_maximal_h(Clique,[F|L]) :- xnot_contains_clique(Clique,F),xnot_maximal_h(Clique,L).
+
+xnot_maximal(Clique,Cliques) :- xremove_all(Cliques,Clique,L),xnot_maximal_h(Clique,L).
 
 for_each_clique(_,[],_,[]).
 for_each_clique(L1,[F2|L2],N,X) :- for_each_clique(L1,L2,N,Y),
@@ -106,4 +102,4 @@ for_each_clique(L1,[F2|L2],N,X) :- for_each_clique(L1,L2,N,Y),
                                 xnot_maximal(F2,L1),
                                 X=Y.
 
-maxclique(N,Cliques) :- findall(X,clique(X),L),trace,for_each_clique(L,L,N,X),Cliques=X.
+maxclique(N,Cliques) :- findall(X,clique(X),L),for_each_clique(L,L,N,X),Cliques=X.

@@ -57,21 +57,37 @@ test(xadd,all(X == [3])) :- xadd(1,2,X).
 %test(allConnected,fail) :- allConnected([a,b,e]).
 %:- end_tests(allConnected).
 
-:- begin_tests(xnot_contains_clique).
-test(xnot_contains_clique,fail) :- xnot_contains_clique([a,b],[a,b,c]).
-test(xnot_contains_clique) :- xnot_contains_clique([a,e],[a,b,c]).
-test(xnot_contains_clique) :- xnot_contains_clique([d],[a,b,c]).
-test(xnot_contains_clique,fail) :- xnot_contains_clique([a],[a,b,c]).
-test(xnot_contains_clique,fail) :- xnot_contains_clique([a,d],[a,b,c,d]).
-:- end_tests(xnot_contains_clique).
+%:- begin_tests(xcontains_clique).
+%test(xcontains_clique) :- xcontains_clique([a,b],[a,b,c]).
+%test(xcontains_clique,fail) :- xcontains_clique([a,e],[a,b,c]).
+%test(xcontains_clique,fail) :- xcontains_clique([d],[a,b,c]).
+%test(xcontains_clique) :- xcontains_clique([a],[a,b,c]).
+%test(xcontains_clique) :- xcontains_clique([a,d],[a,b,c,d]).
+%:- end_tests(xcontains_clique).
 
-:- begin_tests(xmaximal).
-test(xmaximal,fail) :- findall(X,clique(X),L),xmaximal([a,b],L).
-test(xmaximal) :- findall(X,clique(X),L),xmaximal([a,e],L).
-test(xmaximal) :- findall(X,clique(X),L),xmaximal([a,d],L).
-test(xmaximal,fail) :- findall(X,clique(X),L),xmaximal([a,c],L).
-test(xmaximal) :- findall(X,clique(X),L),xmaximal([a,b,c],L).
-:- end_tests(xmaximal).
+%:- begin_tests(xnot_contains_clique).
+%test(xnot_contains_clique,fail) :- xnot_contains_clique([a,b],[a,b,c]).
+%test(xnot_contains_clique) :- xnot_contains_clique([a,e],[a,b,c]).
+%test(xnot_contains_clique) :- xnot_contains_clique([d],[a,b,c]).
+%test(xnot_contains_clique,fail) :- xnot_contains_clique([a],[a,b,c]).
+%test(xnot_contains_clique,fail) :- xnot_contains_clique([a,d],[a,b,c,d]).
+%:- end_tests(xnot_contains_clique).
+
+%:- begin_tests(xmaximal).
+%test(xmaximal,fail) :- findall(X,clique(X),L),xmaximal([a,b],L).
+%test(xmaximal) :- findall(X,clique(X),L),xmaximal([a,e],L).
+%test(xmaximal) :- findall(X,clique(X),L),xmaximal([a,d],L).
+%test(xmaximal,fail) :- findall(X,clique(X),L),xmaximal([a,c],L).
+%test(xmaximal) :- findall(X,clique(X),L),xmaximal([a,b,c],L).
+%:- end_tests(xmaximal).
+
+%:- begin_tests(xnot_maximal).
+%test(xnot_maximal) :- findall(X,clique(X),L),xnot_maximal([a,b],L).
+%test(xnot_maximal,fail) :- findall(X,clique(X),L),xnot_maximal([a,e],L).
+%test(xnot_maximal,fail) :- findall(X,clique(X),L),xnot_maximal([a,d],L).
+%test(xnot_maximal) :- findall(X,clique(X),L),xnot_maximal([a,c],L).
+%test(xnot_maximal,fail) :- findall(X,clique(X),L),xnot_maximal([a,b,c],L).
+%:- end_tests(xnot_maximal).
 
 :- begin_tests(maxclique).
 test(maxclique,true(Cliques == [[a,d],[a,e]])) :- maxclique(2,Cliques).
