@@ -21,6 +21,15 @@ xappend_value([F|L1], X, [F|L2]) :- xappend_value(L1,X,L2).
 xcontains_clique([], _).
 xcontains_clique([F1|Clique1], Clique2) :- xcount_instances(Clique2,F1,X),X == 1,xcontains_clique(Clique1,Clique2).
 
+power(_,0,1).
+power(X,Y,Z) :- V is Y - 1,
+                power(X,V,W),
+                Z is X * W.
+
+sum([], 0).
+sum([F|L], X) :- sum(L,Y),
+                X is F + Y.
+
 xnot_maximal_h(X,[]) :- X \== X. % ensure the result is false
 xnot_maximal_h(Clique,[F|_]) :- xcontains_clique(Clique,F).
 xnot_maximal_h(Clique,[F|L]) :- xnot_contains_clique(Clique,F),xnot_maximal_h(Clique,L).
