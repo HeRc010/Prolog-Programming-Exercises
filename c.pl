@@ -1,34 +1,31 @@
 :- use_module(library(clpfd)).
 :- use_module(library(arithmetic)).
 
-%fourSquares(N,[S1,S2,S3,S4]) :- R is floor(sqrt(N)),
-%                                Vars = [S1, S2, S3],
-%                                Vars ins 0..R,
-%                                S4 in 1..R,
-%                                S1 #=< S2,
-%                                S2 #=< S3,
-%                                S3 #=< S4,
-%                                S1*S1 + S2*S2 + S3*S3 + S4*S4 #= N*N. % problem
-
 fourSquares(N,[S1,S2,S3,S4]) :- R is floor(sqrt(N)),
-                                S1 #>= 0,
-                                S1 #=< R,
-                                S2 #>= 0,
-                                S2 #=< R,
-                                S3 #>= 0,
-                                S3 #=< R,
-                                S4 #>= 1,
-                                S4 #=< R,
+                                Vars = [S1, S2, S3],
+                                Vars ins 0..R,
+                                S4 in 1..R,
+                                S1^2 + S2^2 + S3^2 + S4^2 #= N,
                                 S1 #=< S2,
                                 S2 #=< S3,
-                                S3 #=< S4,
-                                sum([S1SQ,S2SQ,S3SQ,S4SQ],X),
-                                X is N,
-                                S1SQ #= S1*S1,
-                                S2SQ #= S2*S2,
-                                S3SQ #= S3*S3,
-                                S4SQ #= S4*S4.
-%                                S1**2 + S2**2 + S3**2 + S4**2 == N.
+                                S3 #=< S4.
+
+%fourSquares_h() :-
+
+%fourSquares(N,[S1,S2,S3,S4]) :- R is floor(sqrt(N)),
+%                                S1 >= 0,
+%                                S1 =< R,
+%                                S2 >= 0,
+%                                S2 =< R,
+%                                S3 >= 0,
+%                                S3 =< R,
+%                                S4 >= 1,
+%                                S4 =< R,
+%                                S1 =< S2,
+%                                S2 =< S3,
+%                                S3 =< S4,
+%                                Z is S1**2 + S2**2 + S3**2 + S4**2,
+%                                Z == N.
 
 % X**Y ???
 power(_,0,1).
