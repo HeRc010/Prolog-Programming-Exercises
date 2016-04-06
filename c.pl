@@ -3,7 +3,6 @@
 
 % fourSquares(+N, [-S1, -S2, -S3, -S4])
 fourSquares(N,X) :- fourSquares_h(N,X),label(X).
-
 fourSquares_h(N,[S1,S2,S3,S4]) :- N >= 0,
                                 R is floor(sqrt(N)),
                                 Vars = [S1, S2, S3],
@@ -15,10 +14,53 @@ fourSquares_h(N,[S1,S2,S3,S4]) :- N >= 0,
                                 S3 #=< S4.
 
 % disarm(+A, +B, -S)
-disarm(A, B, S) :- disarm_h(A, B, [], W),
-                  S = W.
+%
+% Test Cases:
+% disarm([1, 3, 3, 4, 6, 10, 12],[3, 4, 7, 9, 16],X). -> X = [[[6, 10], 16], [[3, 4], 7], [[1, 3], 4], [12, [3, 9]]]
+disarm(A, B, S) :- msort(A, W),
+                  msort(B, X),
+                  disarm_h(W, X, [], Y),
+                  sortByStrength(Y, Z), !,
+                  S = Z.
 
-%sortByStrength() :- 
+% sortByStrength(+D, -L)
+sortByStrength(D, L) :- buildStrengthList(D, S),
+                        msort(S, W),
+                        sortByStrength_h(D, W, [], L).
+
+sortByStrength_h([], [], L1, L2) :- L2 = L1.
+sortByStrength_h(D, [F|S], L1, L2) :- findDisarment(D, F, W, X),
+                                  appendValue(L1, W, Y),
+                                  sortByStrength_h(X, S, Y, L2).
+
+% findDisarment(+L1, +S, -D, -L2)
+findDisarment([], _, _, []).
+findDisarment([F|L1], S, D, L2) :- findDisarment(L1, S, D, X),
+                                  strength(F, S),
+                                  D = F,
+                                  L2 = X.
+findDisarment([F|L1], S, D, L2) :- findDisarment(L1, S, D, X),
+                                  not(strength(F, S)),
+                                  appendValue(X, F, Y),
+                                  L2 = Y.
+
+% buildStrengthList(+D, -L)
+buildStrengthList([], []).
+buildStrengthList([F|D], L) :- buildStrengthList(D, X),
+                              strength(F, S),
+                              appendValue(X, S, L).
+
+% strength(+D, -S) % TODO: improve this implementation
+strength([F|_], S) :- isPair(F),
+                      pairSum(F, S).
+strength([F|R], S) :- not(isPair(F)),
+                      first(R, X),
+                      pairSum(X, S).
+
+first([], X) :- X \== X.
+first([F|_], X) :- X = F.
+
+isPair([_,_]).
 
 disarm_h([], [], X, Y) :- Y = X.
 disarm_h(A, B, S1, S2) :- buildPairs(A, P),
