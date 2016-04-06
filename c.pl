@@ -18,13 +18,25 @@ fourSquares_h(N,[S1,S2,S3,S4]) :- N >= 0,
 disarm(A, B, S) :- disarm_h(A, B, [], W),
                   S = W.
 
+%sortByStrength() :- 
+
+disarm_h([], [], X, Y) :- Y = X.
 disarm_h(A, B, S1, S2) :- buildPairs(A, P),
                           findPair(P, B, U),
-                          appendValue(S1, U, V),
                           removeFirstInstances(U, A, W),
                           pairSum(U, X),
                           removeFirstInstance(B, X, Y),
-                          disarm_h(W, Y, V, S2). % need an end condition; size of W and Y is zero
+                          pair(U, X, Z),
+                          appendValue(S1, Z, V),
+                          disarm_h(W, Y, V, S2).
+disarm_h(A, B, S1, S2) :- buildPairs(B, P),
+                          findPair(P, A, U),
+                          removeFirstInstances(U, B, W),
+                          pairSum(U, X),
+                          removeFirstInstance(A, X, Y),
+                          pair(X, U, Z),
+                          appendValue(S1, Z, V),
+                          disarm_h(W, Y, V, S2).
 
 % findPair(+P, +L, -X)
 findPair([], L, _) :- L \== L.
@@ -141,7 +153,7 @@ countInstances([F|L], X, Y) :- countInstances(L, X, W),
 % buildPairs([1, 2, 3], [[1, 2], [1, 3], [2, 3]]).
 % buildPairs([1, 2, 3, 4], [[1, 2], [1, 3], [1, 4], [2, 3], [2, 4], [3, 4]]).
 buildPairs([], [[]]). % edge case; may be uneeded
-buildPairs([_], _).
+buildPairs([_], []).
 buildPairs([F|L], P) :- buildPairs(L, W),
                         buildPairs_h(F, L, X),
                         append(W, X, Y),
@@ -174,6 +186,6 @@ append([A|L1], L2, [A|L3]) :- append(L1, L2, L3).
 pair(X, Y, Z) :- Z = [X, Y].
 
 % pairSum(+P, -X)
-pairSum([],_).
-pairSum([_],_).
+pairSum([],0).
+pairSum([_],0).
 pairSum([X, Y], Z) :- Z is X + Y.
