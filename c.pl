@@ -3,7 +3,8 @@
 
 fourSquares(N,X) :- fourSquares_h(N,X),label(X).
 
-fourSquares_h(N,[S1,S2,S3,S4]) :- R is floor(sqrt(N)),
+fourSquares_h(N,[S1,S2,S3,S4]) :- N >= 0,
+                                R is floor(sqrt(N)),
                                 Vars = [S1, S2, S3],
                                 Vars ins 0..R,
                                 S4 in 1..R,
@@ -12,11 +13,30 @@ fourSquares_h(N,[S1,S2,S3,S4]) :- R is floor(sqrt(N)),
                                 S2 #=< S3,
                                 S3 #=< S4.
 
-puzzle([S,E,N,D] + [M,O,R,E] = [M,O,N,E,Y]) :-
-        Vars = [S,E,N,D,M,O,R,Y],
-        Vars ins 0..9,
-        all_different(Vars),
-                  S*1000 + E*100 + N*10 + D +
-                  M*1000 + O*100 + R*10 + E #=
-        M*10000 + O*1000 + N*100 + E*10 + Y,
-        M #\= 0, S #\= 0.
+equal_strength([X],[X]).
+equal_strength([X],[Y,Z]) :- X = W, W is Y + Z.
+equal_strength([X,Y],[Z]) :- Z = W, W is X + Y.
+equal_strength([W,X],[Y,Z]) :- U = V, U is W + X, V is Y + Z.
+
+enumerate([]).
+enumerate([_|L]) :- enumerate(L).
+
+% buildPairs(+L, -P)
+%
+% Test Cases:
+%
+% buildPairs([],[[]]) -> true
+% buildPairs([1, 2],[[1, 2]])
+% buildPairs([1, 2, 3], [[1, 2], [1, 3], [2, 3]])
+% buildPairs([1, 2, 3, 4], [[1, 2], [1, 3], [1, 4], [2, 3], [2, 4], [3, 4]])
+
+buildPairs([_], _). % edge case
+buildPairs([], [[]]).
+%buildPairs(L, P) :- .
+
+%buildPairs_h(X, L, P) :-
+
+appendValue([],X,[F|L]) :- X = F,xcount(L,Y),Y == 0.
+appendValue([F|L1], X, [F|L2]) :- appendValue(L1,X,L2).
+
+pair(X, Y, Z) :- Z = [X, Y].
