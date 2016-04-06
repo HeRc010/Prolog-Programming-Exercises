@@ -1,6 +1,7 @@
 :- use_module(library(clpfd)).
 :- use_module(library(arithmetic)).
 
+% fourSquares(+N, [-S1, -S2, -S3, -S4])
 fourSquares(N,X) :- fourSquares_h(N,X),label(X).
 
 fourSquares_h(N,[S1,S2,S3,S4]) :- N >= 0,
@@ -13,6 +14,27 @@ fourSquares_h(N,[S1,S2,S3,S4]) :- N >= 0,
                                 S2 #=< S3,
                                 S3 #=< S4.
 
+% disarm(+A, +B, -S)
+disarm(A, B, S) :- disarm_h(A, B, [], W),
+                  S = W.
+
+disarm_h(A, B, S1, S2) :- buildPairs(A, P),
+                          findPair(P, B, U),
+                          appendValue(S1, U, V),
+                          removeFirstInstances(U, A, W),
+                          pairSum(U, X),
+                          removeFirstInstance(B, X, Y),
+                          disarm_h(W, Y, V, S2). % need an end condition; size of W and Y is zero
+
+% findPair(+P, +L, -X)
+findPair([], L, _) :- L \== L.
+findPair([F|_], L, X) :- pairSum(F, S),
+                        contains(L, S),
+                        X = F.
+findPair([F|P], L, X) :- pairSum(F, S),
+                        not(contains(L, S)),
+                        findPair(P, L, X).
+
 equal_strength([X],[X]).
 equal_strength([X],[Y,Z]) :- X = W, W is Y + Z.
 equal_strength([X,Y],[Z]) :- Z = W, W is X + Y.
@@ -20,6 +42,18 @@ equal_strength([W,X],[Y,Z]) :- U = V, U is W + X, V is Y + Z.
 
 enumerate([]).
 enumerate([_|L]) :- enumerate(L).
+
+testFn([], X) :- X \== X.
+testFn([F|_], L) :- pairSum(F, W),
+                    contains(L, W).
+testFn([F|P], L) :- pairSum(F, W),
+                    not(contains(L, W)),
+                    testFn(P, L).
+
+% curry(+L1, +L2, -L3)
+curry([], X, Y) :- Y = X.
+curry([F|L1], L2, L3) :- appendValue(L2, F, X),
+                    curry(L1, X, L3).
 
 % matchStrength(+P, +L, -X)
 matchStrength(_, [], X) :- X \== X.
