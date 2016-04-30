@@ -1,7 +1,6 @@
 :- use_module(library(clpfd)).
 :- use_module(library(arithmetic)).
 
-% fourSquares(+N, [-S1, -S2, -S3, -S4])
 fourSquares(N,X) :- fourSquares_h(N,X),label(X).
 fourSquares_h(N,[S1,S2,S3,S4]) :- N >= 0,
                                 R is floor(sqrt(N)),
